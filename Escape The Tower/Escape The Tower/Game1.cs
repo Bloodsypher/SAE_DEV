@@ -72,7 +72,7 @@ namespace Escape_The_Tower
             _keyboardState = Keyboard.GetState();
 
             // si fleche droite
-            if (_keyboardState.IsKeyDown(Keys.Right) && !_keyboardState.IsKeyDown(Keys.Left))
+            if (_keyboardState.IsKeyDown(Keys.D) && !_keyboardState.IsKeyDown(Keys.Q))
             {
                 _perso.Play("walkEast");
                 _perso.Update(deltaSeconds); // time écoulé
@@ -80,7 +80,7 @@ namespace Escape_The_Tower
             }
 
             // si fleche gauchee
-            if (_keyboardState.IsKeyDown(Keys.Left) && !_keyboardState.IsKeyDown(Keys.Right))
+            if (_keyboardState.IsKeyDown(Keys.Q) && !_keyboardState.IsKeyDown(Keys.D))
             {
                 _perso.Play("walkWest");
                 _perso.Update(deltaSeconds);
@@ -88,7 +88,7 @@ namespace Escape_The_Tower
             }
 
             //si fleche bas
-            if (_keyboardState.IsKeyDown(Keys.Down) && !_keyboardState.IsKeyDown(Keys.Up))
+            if (_keyboardState.IsKeyDown(Keys.S) && !_keyboardState.IsKeyDown(Keys.Z))
             {
                 _perso.Play("walkSouth");
                 _perso.Update(deltaSeconds);
@@ -96,14 +96,39 @@ namespace Escape_The_Tower
             }
 
             //si fleche haut
-            if (_keyboardState.IsKeyDown(Keys.Up) && !_keyboardState.IsKeyDown(Keys.Down))
+            if (_keyboardState.IsKeyDown(Keys.Z) && !_keyboardState.IsKeyDown(Keys.S))
             {
                 _perso.Play("walkNorth");
                 _perso.Update(deltaSeconds);
                 _positionPerso.Y = _positionPerso.Y - _vitessePerso;
             }
 
-                base.Update(gameTime);
+            //combinaison de touche pour pas bouger
+            if (_keyboardState.IsKeyDown(Keys.Z) && _keyboardState.IsKeyDown(Keys.D))
+            {
+                _positionPerso.Y = _positionPerso.Y + _vitessePerso;
+                _positionPerso.X = _positionPerso.X - _vitessePerso;
+            }
+
+            if (_keyboardState.IsKeyDown(Keys.Z) && _keyboardState.IsKeyDown(Keys.Q))
+            {
+                _positionPerso.Y = _positionPerso.Y + _vitessePerso;
+                _positionPerso.X = _positionPerso.X + _vitessePerso;
+            }
+
+            if (_keyboardState.IsKeyDown(Keys.S) && _keyboardState.IsKeyDown(Keys.Q))
+            {
+                _positionPerso.Y = _positionPerso.Y - _vitessePerso;
+                _positionPerso.X = _positionPerso.X + _vitessePerso;
+            }
+
+            if (_keyboardState.IsKeyDown(Keys.S) && _keyboardState.IsKeyDown(Keys.D))
+            {
+                _positionPerso.Y = _positionPerso.Y - _vitessePerso;
+                _positionPerso.X = _positionPerso.X - _vitessePerso;
+            }
+
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
