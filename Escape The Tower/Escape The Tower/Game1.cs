@@ -78,7 +78,7 @@ namespace Escape_The_Tower
                 _positionPerso.X++;
             }
 
-            // si fleche gauche
+            // si fleche gauchee
 
                 base.Update(gameTime);
         }
