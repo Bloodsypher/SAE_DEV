@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Content;
+using MonoGame.Extended.Serialization;
+using MonoGame.Extended.Sprites;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
 
@@ -13,7 +16,8 @@ namespace Escape_The_Tower
         private SpriteBatch _spriteBatch;
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
-        private KeyboardState _keyboardState;
+        private Vector2 _positionPerso;
+        private AnimatedSprite _perso;
 
 
         public const int LONGUEUR_ECRAN = 1400;
@@ -33,7 +37,7 @@ namespace Escape_The_Tower
             _graphics.PreferredBackBufferHeight = LARGEUR_ECRAN;
             _graphics.ApplyChanges();
 
-            Rectangle perso1 = new Rectangle(LONGUEUR_ECRAN / 2, LARGEUR_ECRAN / 2, 50, 50);
+            _positionPerso = new Vector2(20,240);
 
             base.Initialize();
         }
@@ -45,6 +49,8 @@ namespace Escape_The_Tower
             // TODO: use this.Content to load your game content here
             _tiledMap = Content.Load<TiledMap>("mapGenerale");
             _tiledMapRenderer = new TiledMapRenderer(GraphicsDevice, _tiledMap);
+            SpriteSheet spriteSheet = Content.Load<SpriteSheet>("persoAnimation.sf", new JsonContentLoader());
+            _perso = new AnimatedSprite(spriteSheet);
         }
 
         protected override void Update(GameTime gameTime)
@@ -77,6 +83,9 @@ namespace Escape_The_Tower
             // TODO: Add your drawing code here
             
             _tiledMapRenderer.Draw();
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_perso, _positionPerso);
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
