@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Tiled;
@@ -13,6 +14,9 @@ namespace Escape_The_Tower
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
 
+
+        public const int LONGUEUR_ECRAN = 1400;
+        public const int LARGEUR_ECRAN = 800;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -23,6 +27,12 @@ namespace Escape_The_Tower
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            _graphics.PreferredBackBufferWidth = LONGUEUR_ECRAN;
+            _graphics.PreferredBackBufferHeight = LARGEUR_ECRAN;
+            _graphics.ApplyChanges();
+
+            Rectangle perso1 = new Rectangle(LONGUEUR_ECRAN / 2, LARGEUR_ECRAN / 2, 50, 50);
 
             base.Initialize();
         }
