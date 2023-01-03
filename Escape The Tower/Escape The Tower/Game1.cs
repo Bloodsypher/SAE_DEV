@@ -20,8 +20,7 @@ namespace Escape_The_Tower
         private AnimatedSprite _perso;
         private KeyboardState _keyboardState;
         private int _vitessePerso;
-        
-
+        private float deltaSeconds;
         public const int LONGUEUR_ECRAN = 1400;
         public const int LARGEUR_ECRAN = 800;
         public Game1()
@@ -39,7 +38,7 @@ namespace Escape_The_Tower
             _graphics.PreferredBackBufferHeight = LARGEUR_ECRAN;
             _graphics.ApplyChanges();
 
-            _vitessePerso = 50;
+            _vitessePerso = 2;
 
             _positionPerso = new Vector2(20,240);
 
@@ -65,6 +64,7 @@ namespace Escape_The_Tower
             // TODO: Add your update logic here
             _tiledMapRenderer.Update(gameTime);
             _perso.Play("idle" ); // une des animations définies dans « persoAnimation.sf »
+            _perso.Update(deltaSeconds); // time écoulé
 
 
 
@@ -74,8 +74,9 @@ namespace Escape_The_Tower
             // si fleche droite
             if (_keyboardState.IsKeyDown(Keys.Right) && !_keyboardState.IsKeyDown(Keys.Left))
             {
-                
-                _positionPerso.X++;
+                _perso.Play("walkEast");
+                _perso.Update(deltaSeconds); // time écoulé
+                _positionPerso.X = _positionPerso.X + _vitessePerso;
             }
 
             // si fleche gauchee
