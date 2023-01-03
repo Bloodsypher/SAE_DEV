@@ -19,8 +19,6 @@ namespace Escape_The_Tower
         private Vector2 _positionPerso;
         private AnimatedSprite _perso;
         private KeyboardState _keyboardState;
-
-
         public const int LONGUEUR_ECRAN = 1400;
         public const int LARGEUR_ECRAN = 800;
         public Game1()
@@ -61,7 +59,7 @@ namespace Escape_The_Tower
 
             // TODO: Add your update logic here
             _tiledMapRenderer.Update(gameTime);
-
+            _perso.Play("idle" ); // une des animations définies dans « persoAnimation.sf »
 
 
 
