@@ -80,6 +80,24 @@ namespace Escape_The_Tower
             }
 
             // si fleche gauchee
+            if (_keyboardState.IsKeyDown(Keys.Left) && !_keyboardState.IsKeyDown(Keys.Right))
+            {
+
+                _positionPerso.X = _positionPerso.X - _vitessePerso;
+            }
+
+            //si fleche bas
+            if (_keyboardState.IsKeyDown(Keys.Down) && !_keyboardState.IsKeyDown(Keys.Up))
+            {
+                _positionPerso.Y = _positionPerso.Y + _vitessePerso;
+            }
+
+            //si fleche haut
+            if (_keyboardState.IsKeyDown(Keys.Up) && !_keyboardState.IsKeyDown(Keys.Down))
+            {
+
+                _positionPerso.Y = _positionPerso.Y - _vitessePerso;
+            }
 
                 base.Update(gameTime);
         }
