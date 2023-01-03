@@ -13,6 +13,7 @@ namespace Escape_The_Tower
         private SpriteBatch _spriteBatch;
         private TiledMap _tiledMap;
         private TiledMapRenderer _tiledMapRenderer;
+        private KeyboardState _keyboardState;
 
 
         public const int LONGUEUR_ECRAN = 1400;
@@ -54,7 +55,19 @@ namespace Escape_The_Tower
             // TODO: Add your update logic here
             _tiledMapRenderer.Update(gameTime);
 
-            base.Update(gameTime);
+
+
+
+            //DEPLACEMENT PERSO1
+            _keyboardState = Keyboard.GetState();
+
+            // si fleche droite
+            if (_keyboardState.IsKeyDown(Keys.Right) && !_keyboardState.IsKeyDown(Keys.Left))
+            {
+
+            }
+
+                base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -62,6 +75,7 @@ namespace Escape_The_Tower
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            
             _tiledMapRenderer.Draw();
             base.Draw(gameTime);
         }
