@@ -19,6 +19,9 @@ namespace Escape_The_Tower
         private Vector2 _positionPerso;
         private AnimatedSprite _perso;
         private KeyboardState _keyboardState;
+        private int _vitessePerso;
+        
+
         public const int LONGUEUR_ECRAN = 1400;
         public const int LARGEUR_ECRAN = 800;
         public Game1()
@@ -35,6 +38,8 @@ namespace Escape_The_Tower
             _graphics.PreferredBackBufferWidth = LONGUEUR_ECRAN;
             _graphics.PreferredBackBufferHeight = LARGEUR_ECRAN;
             _graphics.ApplyChanges();
+
+            _vitessePerso = 50;
 
             _positionPerso = new Vector2(20,240);
 
@@ -69,8 +74,11 @@ namespace Escape_The_Tower
             // si fleche droite
             if (_keyboardState.IsKeyDown(Keys.Right) && !_keyboardState.IsKeyDown(Keys.Left))
             {
-
+                
+                _positionPerso.X++;
             }
+
+            // si fleche gauchee
 
                 base.Update(gameTime);
         }
