@@ -18,6 +18,7 @@ namespace Escape_The_Tower
         private TiledMapRenderer _tiledMapRenderer;
         private Vector2 _positionPerso;
         private AnimatedSprite _perso;
+        private KeyboardState _keyboardState;
 
 
         public const int LONGUEUR_ECRAN = 1400;
