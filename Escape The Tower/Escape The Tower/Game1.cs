@@ -39,7 +39,7 @@ namespace Escape_The_Tower
             _graphics.PreferredBackBufferHeight = LARGEUR_ECRAN;
             _graphics.ApplyChanges();
 
-            _vitessePerso = 50;
+            _vitessePerso = 2;
 
             _positionPerso = new Vector2(20,240);
 
@@ -75,10 +75,28 @@ namespace Escape_The_Tower
             if (_keyboardState.IsKeyDown(Keys.Right) && !_keyboardState.IsKeyDown(Keys.Left))
             {
                 
-                _positionPerso.X++;
+                _positionPerso.X = _positionPerso.X + _vitessePerso;
             }
 
             // si fleche gauchee
+            if (_keyboardState.IsKeyDown(Keys.Left) && !_keyboardState.IsKeyDown(Keys.Right))
+            {
+
+                _positionPerso.X = _positionPerso.X - _vitessePerso;
+            }
+
+            //si fleche bas
+            if (_keyboardState.IsKeyDown(Keys.Down) && !_keyboardState.IsKeyDown(Keys.Up))
+            {
+                _positionPerso.Y = _positionPerso.Y + _vitessePerso;
+            }
+
+            //si fleche haut
+            if (_keyboardState.IsKeyDown(Keys.Up) && !_keyboardState.IsKeyDown(Keys.Down))
+            {
+
+                _positionPerso.Y = _positionPerso.Y - _vitessePerso;
+            }
 
                 base.Update(gameTime);
         }
