@@ -40,7 +40,7 @@ namespace Escape_The_Tower
 
             _vitessePerso = 2;
 
-            _positionPerso = new Vector2(20,240);
+            _positionPerso = new Vector2(20, 240);
 
             base.Initialize();
         }
@@ -63,7 +63,7 @@ namespace Escape_The_Tower
 
             // TODO: Add your update logic here
             _tiledMapRenderer.Update(gameTime);
-            _perso.Play("idle" ); // une des animations définies dans « persoAnimation.sf »
+            _perso.Play("idle"); // une des animations définies dans « persoAnimation.sf »
             _perso.Update(deltaSeconds); // time écoulé
 
 
@@ -136,12 +136,14 @@ namespace Escape_The_Tower
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            
+
             _tiledMapRenderer.Draw();
             _spriteBatch.Begin();
             _spriteBatch.Draw(_perso, _positionPerso);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
+       
     }
+    
 }
