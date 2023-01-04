@@ -18,6 +18,23 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin lab tileset finished transparent.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:lab tileset finished transparent.png
+
+#begin labo.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:labo.tmx
+
 #begin mapGenerale.tmx
 /importer:TiledMapImporter
 /processor:TiledMapProcessor
