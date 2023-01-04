@@ -43,7 +43,7 @@ namespace Escape_The_Tower
 
             _vitessePerso = _vitessePersoDebut;
 
-            _positionPerso = new Vector2(20,240);
+            _positionPerso = new Vector2(20, 240);
 
             base.Initialize();
         }
@@ -64,7 +64,14 @@ namespace Escape_The_Tower
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            // TODO: Add your update logic here
+            _tiledMapRenderer.Update(gameTime);
+            _perso.Play("idle"); // une des animations définies dans « persoAnimation.sf »
+            _perso.Update(deltaSeconds); // time écoulé
+
+
+
+            //DEPLACEMENT PERSO1
             _keyboardState = Keyboard.GetState();
 
             // ==============================================================================
@@ -184,32 +191,12 @@ namespace Escape_The_Tower
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            
+
             _tiledMapRenderer.Draw();
             _spriteBatch.Begin();
             _spriteBatch.Draw(_perso, _positionPerso);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
-       // private bool IsCollision(ushort x, ushort y)
-        //{
-           // if (mapLayer.GetTile(x, y).GlobalIdentifier == 129)
-                //Console.WriteLine("Porte Maison Bleue");
-
-            //if (mapLayer.GetTile(x, y).GlobalIdentifier == 135)
-              //  Console.WriteLine("Porte Maison Rouge");
-
-//            if (mapLayer.GetTile(x, y).GlobalIdentifier == 141)
-  //              Console.WriteLine("Porte Maison Verte");
-
-            // définition de tile qui peut être null (?)
-          //  TiledMapTile? tile;
-           // if (mapLayer.TryGetTile(x, y, out tile) == false)
-            //    return false;
-            //if (!tile.Value.IsBlank)
-             //   return true;
-           // return false;
-        }
     }
-    
-
+}
