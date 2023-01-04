@@ -18,11 +18,14 @@ namespace Escape_The_Tower
         private TiledMapRenderer _tiledMapRenderer;
         private Vector2 _positionPerso;
         private AnimatedSprite _perso;
+        private TiledMapTileLayer mapLayer;
         private KeyboardState _keyboardState;
-        private int _vitessePerso;
-        private float deltaSeconds;
-        public const int LONGUEUR_ECRAN = 1400;
-        public const int LARGEUR_ECRAN = 800;
+        public float _vitessePerso;
+        public float _vitessePersoDebut = 100;
+        private int _sensPersoX;
+        private int _sensPersoY;
+        //public const int LONGUEUR_ECRAN = 1400;
+        //public const int LARGEUR_ECRAN = 800;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -34,11 +37,11 @@ namespace Escape_The_Tower
         {
             // TODO: Add your initialization logic here
 
-            _graphics.PreferredBackBufferWidth = LONGUEUR_ECRAN;
-            _graphics.PreferredBackBufferHeight = LARGEUR_ECRAN;
+            //_graphics.PreferredBackBufferWidth = LONGUEUR_ECRAN;
+            //_graphics.PreferredBackBufferHeight = LARGEUR_ECRAN;
             _graphics.ApplyChanges();
 
-            _vitessePerso = 2;
+            _vitessePerso = _vitessePersoDebut;
 
             _positionPerso = new Vector2(20,240);
 
@@ -61,72 +64,117 @@ namespace Escape_The_Tower
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            _tiledMapRenderer.Update(gameTime);
-            _perso.Play("idle" ); // une des animations définies dans « persoAnimation.sf »
-            _perso.Update(deltaSeconds); // time écoulé
-
-
-
-            //DEPLACEMENT PERSO1
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _keyboardState = Keyboard.GetState();
 
-            // si fleche droite
-            if (_keyboardState.IsKeyDown(Keys.D) && !_keyboardState.IsKeyDown(Keys.Q))
+            // ==============================================================================
+            // =============================GESTION RUN======================================
+            // ==============================================================================
+
+            if (_keyboardState.IsKeyDown(Keys.LeftShift))
             {
-                _perso.Play("walkEast");
-                _perso.Update(deltaSeconds); // time écoulé
-                _positionPerso.X = _positionPerso.X + _vitessePerso;
+                _vitessePerso = _vitessePersoDebut * 2;
+            }
+            else if (_keyboardState.IsKeyUp(Keys.LeftShift))
+            {
+                _vitessePerso = _vitessePersoDebut;
             }
 
-            // si fleche gauchee
-            if (_keyboardState.IsKeyDown(Keys.Q) && !_keyboardState.IsKeyDown(Keys.D))
+            // ==============================================================================
+            // =============================GESTION DEPLACEMENT==============================
+            // ==============================================================================
+
+            _sensPersoX = 0;
+            _sensPersoY = 0;
+
+            // si fleche droite enfoncé
+            if (_keyboardState.IsKeyDown(Keys.Right) && !(_keyboardState.IsKeyDown(Keys.Left)))
             {
-                _perso.Play("walkWest");
-                _perso.Update(deltaSeconds);
-                _positionPerso.X = _positionPerso.X - _vitessePerso;
+                ushort txMillieu = (ushort)(_positionPerso.X / _tiledMap.TileWidth + 1);
+                ushort tyMillieu = (ushort)(_positionPerso.Y / _tiledMap.TileHeight);
+
+                //ushort txHaut = (ushort)(_positionPerso.X / _tiledMap.TileWidth + 1);
+                // ushort tyHaut = (ushort)(_positionPerso.Y / _tiledMap.TileHeight - 1);
+
+                ushort txBas = (ushort)(_positionPerso.X / _tiledMap.TileWidth + 1);
+                ushort tyBas = (ushort)(_positionPerso.Y / _tiledMap.TileHeight + 2);
+
+               // if (!IsCollision(txMillieu, tyMillieu) && !IsCollision(txBas, tyBas))// && !IsCollision(txHaut, tyHaut)
+                //    _sensPersoX = 1;
             }
 
-            //si fleche bas
-            if (_keyboardState.IsKeyDown(Keys.S) && !_keyboardState.IsKeyDown(Keys.Z))
+
+            // si fleche gauche enfoncé
+            if (_keyboardState.IsKeyDown(Keys.Left) && !(_keyboardState.IsKeyDown(Keys.Right)))
             {
-                _perso.Play("walkSouth");
-                _perso.Update(deltaSeconds);
-                _positionPerso.Y = _positionPerso.Y + _vitessePerso;
+                ushort txMillieu = (ushort)(_positionPerso.X / _tiledMap.TileWidth - 1);
+                ushort tyMillieu = (ushort)(_positionPerso.Y / _tiledMap.TileHeight);
+
+                //ushort txHaut = (ushort)(_positionPerso.X / _tiledMap.TileWidth - 1);
+                //ushort tyHaut = (ushort)(_positionPerso.Y / _tiledMap.TileHeight - 1);
+
+                ushort txBas = (ushort)(_positionPerso.X / _tiledMap.TileWidth - 1);
+                ushort tyBas = (ushort)(_positionPerso.Y / _tiledMap.TileHeight + 2);
+
+               // if (!IsCollision(txMillieu, tyMillieu) && !IsCollision(txBas, tyBas))// && !IsCollision(txHaut, tyHaut)
+               //     _sensPersoX = -1;
             }
 
-            //si fleche haut
-            if (_keyboardState.IsKeyDown(Keys.Z) && !_keyboardState.IsKeyDown(Keys.S))
+            // si fleche haut enfoncé
+            if (_keyboardState.IsKeyDown(Keys.Up) && !(_keyboardState.IsKeyDown(Keys.Down)))
             {
-                _perso.Play("walkNorth");
-                _perso.Update(deltaSeconds);
-                _positionPerso.Y = _positionPerso.Y - _vitessePerso;
+                ushort txGauche = (ushort)(_positionPerso.X / _tiledMap.TileWidth - 0.5);
+                ushort tyGauche = (ushort)((_positionPerso.Y + 10) / _tiledMap.TileHeight - 1);
+
+                ushort txDroite = (ushort)(_positionPerso.X / _tiledMap.TileWidth + 0.5);
+                ushort tyDroite = (ushort)((_positionPerso.Y + 10) / _tiledMap.TileHeight - 1);
+              //  if (!IsCollision(txGauche, tyGauche) && !IsCollision(txDroite, tyDroite))
+                  //  _sensPersoY = -1;
             }
 
-            //combinaison de touche pour pas bouger
-            if (_keyboardState.IsKeyDown(Keys.Z) && _keyboardState.IsKeyDown(Keys.D))
+            // si fleche bas enfoncé
+            if (_keyboardState.IsKeyDown(Keys.Down) && !(_keyboardState.IsKeyDown(Keys.Up)))
             {
-                _positionPerso.Y = _positionPerso.Y + _vitessePerso;
-                _positionPerso.X = _positionPerso.X - _vitessePerso;
+                ushort txGauche = (ushort)(_positionPerso.X / _tiledMap.TileWidth - 0.5);
+                ushort tyGauche = (ushort)((_positionPerso.Y + 2) / _tiledMap.TileHeight + 2);
+
+                ushort txDroite = (ushort)(_positionPerso.X / _tiledMap.TileWidth + 0.5);
+                ushort tyDroite = (ushort)((_positionPerso.Y + 2) / _tiledMap.TileHeight + 2);
+
+               // if (!IsCollision(txGauche, tyGauche) && !IsCollision(txDroite, tyDroite))
+                   // _sensPersoY = 1;
             }
 
-            if (_keyboardState.IsKeyDown(Keys.Z) && _keyboardState.IsKeyDown(Keys.Q))
-            {
-                _positionPerso.Y = _positionPerso.Y + _vitessePerso;
-                _positionPerso.X = _positionPerso.X + _vitessePerso;
-            }
 
-            if (_keyboardState.IsKeyDown(Keys.S) && _keyboardState.IsKeyDown(Keys.Q))
-            {
-                _positionPerso.Y = _positionPerso.Y - _vitessePerso;
-                _positionPerso.X = _positionPerso.X + _vitessePerso;
-            }
+            // si deux touches alors divise la vitesse par racine de 2
+            if (_sensPersoX != 0 && _sensPersoY != 0 && _keyboardState.IsKeyDown(Keys.LeftShift)) _vitessePerso = (_vitessePersoDebut / (float)Math.Sqrt(2)) * 2;
+            else if (_sensPersoX != 0 && _sensPersoY != 0) _vitessePerso = (_vitessePersoDebut / (float)Math.Sqrt(2));
+            else if (!_keyboardState.IsKeyDown(Keys.LeftShift)) _vitessePerso = _vitessePersoDebut;
 
-            if (_keyboardState.IsKeyDown(Keys.S) && _keyboardState.IsKeyDown(Keys.D))
-            {
-                _positionPerso.Y = _positionPerso.Y - _vitessePerso;
-                _positionPerso.X = _positionPerso.X - _vitessePerso;
-            }
+            // deplace le personnage
+            _positionPerso.X += _sensPersoX * _vitessePerso * deltaTime;
+            _positionPerso.Y += _sensPersoY * _vitessePerso * deltaTime;
+
+            // ==============================================================================
+            // =============================GESTION ANIMATION================================
+            // ==============================================================================
+
+            // si on ne bouge pas alors on play idle
+            if (_sensPersoX == 0 && _sensPersoY == 0) _perso.Play("idle"); // une des animations définies dans « persoAnimation.sf »
+
+            // si on bouge alors on play anim
+            else if (_sensPersoX == 1 && _sensPersoY == 1 || _sensPersoX == -1 && _sensPersoY == 1 || _sensPersoX == 0 && _sensPersoY == 1) _perso.Play("walkSouth");
+            else if (_sensPersoX == 1 && _sensPersoY == -1 || _sensPersoX == -1 && _sensPersoY == -1 || _sensPersoX == 0 && _sensPersoY == -1) _perso.Play("walkNorth");
+            else if (_sensPersoX == -1 && _sensPersoY == 0) _perso.Play("walkWest");
+            else if (_sensPersoX == 1 && _sensPersoY == 0) _perso.Play("walkEast");
+
+            _perso.Update(deltaTime); // time écoulé
+
+            _tiledMapRenderer.Update(gameTime);
+
+
+
+            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
@@ -143,5 +191,25 @@ namespace Escape_The_Tower
             _spriteBatch.End();
             base.Draw(gameTime);
         }
+       // private bool IsCollision(ushort x, ushort y)
+        //{
+           // if (mapLayer.GetTile(x, y).GlobalIdentifier == 129)
+                //Console.WriteLine("Porte Maison Bleue");
+
+            //if (mapLayer.GetTile(x, y).GlobalIdentifier == 135)
+              //  Console.WriteLine("Porte Maison Rouge");
+
+//            if (mapLayer.GetTile(x, y).GlobalIdentifier == 141)
+  //              Console.WriteLine("Porte Maison Verte");
+
+            // définition de tile qui peut être null (?)
+          //  TiledMapTile? tile;
+           // if (mapLayer.TryGetTile(x, y, out tile) == false)
+            //    return false;
+            //if (!tile.Value.IsBlank)
+             //   return true;
+           // return false;
+        }
     }
-}
+    
+
