@@ -143,7 +143,7 @@ namespace Escape_The_Tower
             _spriteBatch.End();
             base.Draw(gameTime);
         }
-       
+
     }
-    
+
 }
